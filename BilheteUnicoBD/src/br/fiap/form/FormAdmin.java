@@ -29,7 +29,7 @@ public class FormAdmin {
 						break;
 					case 3:
 						consultar();
-					
+						break;
 				}
 			}catch (NumberFormatException e) {
 				showMessageDialog(null, "Opção inválida!!!\n" + e);

@@ -34,7 +34,7 @@ public class BilheteUnicoDAO {
 			success = false;
 			System.out.println("Erro ao inserir bilhete!!!\n" + e);
 		}
-		
+
 		return success;
 	}
 	
@@ -106,5 +106,57 @@ public class BilheteUnicoDAO {
 		}
 		
 		return list;
+	}
+
+	public void carregarBilhete(String cpf, double valor) {
+		connection = new Conexao().conectar();
+		sql = "UPDATE java_bilhete SET saldo=? WHERE cpf=?";
+		
+		try {
+			ps = connection.prepareStatement(sql);
+			ps.setDouble(1, valor);
+			ps.setString(2, cpf);
+			
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void passarCatraca(String cpf) {
+		connection = new Conexao().conectar();
+		BilheteUnico bilhete = this.pesquisarCpf(cpf);
+		
+		sql = "UPDATE java_bilhete SET saldo=? WHERE cpf=?";
+		
+		double novoSaldo = bilhete.getSaldo() - bilhete.getValorPassagem();
+		
+		try {
+			ps = connection.prepareStatement(sql);
+			
+			ps.setDouble(1, novoSaldo);
+			ps.setString(2, cpf);
+			
+			ps.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void consultarSaldo(String cpf) {
+		connection = new Conexao().conectar();
+		sql = "SELECT saldo FROM java_bilhete WHERE cpf=?";
+		
+		try {
+			ps = connection.prepareStatement(sql);
+			
+			ps.setString(1, cpf);
+			
+			ps.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
